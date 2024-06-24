@@ -1,0 +1,24 @@
+tree command to visualise directory structure
+To view all 1st branch in the / directory : 
+	tree -L 1 /
+
+Linux directory structure : 
+	/bin contains binaries
+	/boot contains files required for the boot process
+	/dev contains device files (generally usb, webcams, but not hdd or ssd)
+	/etc contains most system-wide configuration files
+	/home contains users' personal directories and files
+	/lib contains librarie files   
+	/media contains external storage support (hdd, ssd)
+	/mnt contains the storage when mounted
+	/opt contains files related to compiled software
+	/proc contains informations related to PC components such as CPU infos, kernel infos...
+	/root contains files for the root user
+	/run contains files stored but applications momentarily (temporary data)
+	/sbin contains other binaries that only the superuser is meant to use
+	/usr now is a legacy directory which can serve as backup in case other directories get erased
+	/srv contains data for server services (apache, ftp...)
+	/sys contains infos from devices connected to the PC
+	/tmp contains temporary files 
+	/var contains files thbat often change such as logs (/var/log)
+

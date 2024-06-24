@@ -1,0 +1,87 @@
+To connect to virsh :
+	virsh --connect qemu:///system 
+
+Once connected, to list VMs : 
+	virsh list --all
+
+To list all networks : 
+	virsh net-list
+
+To find info regarding one network : 
+	virsh net-info <network>
+
+To find VM ip address using its associated network :
+	virsh net-dhcp-leases <network>
+
+To start VM : 
+	virsh start <vm>
+
+To stop VM : 
+	virsh stop <vm>
+
+To reboot VM : 
+	virsh reboot <vm>
+
+To force VM stop : 
+	virsh destroy <vm>
+
+To delete VM : 
+	virsh destroy <vm> 2> /dev/null	
+	virsh undefine <vm>
+	virsh pool-refresh default
+	virsh vol-delete --pool default <vm>.qcow2
+
+To completely wipe VM storage : 
+	rm -rf /var/lib/libvirt/images/<vm>.qcow2
+
+To rename VM : 
+	virsh domrename <oldname> <newname>
+
+To edit a VM config file : 
+	virsh edit <vm>
+
+To check VM config : 
+	virsh dominfo <vm>
+
+To automate VM start at host boot : 
+	virsh autostart <vm>
+
+To disable autostart : 
+	virsh autostart --disable <vm> 
+
+To stop all running VMs : 
+	for i in `sudo virsh list | grep running | awk '{print $2}'` do
+	    	sudo virsh shutdown $i
+	done
+
+To create a VM : 
+	sudo virt-install \
+	--name=<vm name> \
+	--description=<ma description> \
+	--ram=<ram amount> \
+	--vcpus=<vcpu amount> \
+	--os-variant=<os> \
+	--disk size=<size in GO> \
+	--graphics spice \
+	--cdrom=<installer image path> \
+	--network bridge:<virtual networks interface>
+
+To clone a VM (it is needed to shut it down first) : 
+	virt-clone --original <vm> --auto-clone
+	virsh domrename <vm-clone> <new name>
+
+To list all possible os variants available : 
+	virt-install --os-variant list
+
+To connect to the console of a VM : 
+	virsh console <vm>
+
+If a console is already open, this will fail so it is necessary to force the connection : 
+	virsh console <vm> --force
+
+To save a VM state : 
+	virsh save <vm> <snapshot path>
+
+To restore a VM state from snapshot : 
+	virsh restore <snapshot path>
+

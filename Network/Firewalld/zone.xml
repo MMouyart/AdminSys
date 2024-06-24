@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone>
+  <short>Zone example</short>
+  <description>Unsolicited incoming network packets are rejected from port 1 to 1024, except for select network services. Incoming packets that are related to outgoing network connections are accepted. Outgoing network connections are allowed.</description>
+  <!-- The following line specifies a service that should be allowed, given that it uses a well known port (e.g. port 80 for http here)
+  <service name="http"/>
+  <!-- These 2 following lines block all traffic for ports 1-1024 and allow traffic for ports 1025-65535, further rules may change this behaviour -->
+  <port port="1025-65535" protocol="udp"/>
+  <port port="1025-65535" protocol="tcp"/>
+  <!-- The following block specific a rich rule for a given : port, source ip, protocol, action -->
+  <rule family="ipv4">
+    <source address="192.167.14.77"/>
+    <port port="22" protocol="tcp"/>
+    <accept/>
+  </rule>
+  <!-- The following line specifies that all rules made for specific ICMP messages should be reversed (e.g. a rule accepting echo-request will now reject it) -->
+  <icmp-block-inversion/>
+  <!-- The following lines specify which ICMP messages should be blocked (remember that combined with icmp-block-inversion the effect will be reverted) -->
+  <icmp-block name="echo-request"/>
+  <icmp-block name="echo-reply"/>
+  <!-- The following block specifies a rule that uses an ipset for the ip source -->
+  <rule family="ipv4">
+    <source ipset="ipset"/>
+    <port port="23" protocol="udp"/>
+    <reject/>
+  </rule>
+  <!-- The following line specifies a forwarding rule -->
+  <forward-port port="80" protocol="tcp" to-port="8080"/>
+</zone>

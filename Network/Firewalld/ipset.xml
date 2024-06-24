@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ipset type="hash:ip">
+  <!-- The following lines specify which ip to be grouped into this ipset -->
+  <entry>1.1.1.1</entry>
+  <entry>10.10.10.10</entry>
+</ipset>

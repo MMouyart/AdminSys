@@ -1,5 +1,7 @@
 # For vsftpd without tls encryption : 
 ## Install vsftpd
+Refer to your OS prefered package manager.
+Example for Ubuntu distros.
 ```apt-get -y install vsftpd openssl```
 Copy the default conf file :  ```mv vsftpd.conf vsftpd.conf.default```
 edit conf file : 

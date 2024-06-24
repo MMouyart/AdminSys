@@ -1,9 +1,0 @@
-Part 1 basic linux admin sys knowledge
-Users management
-Filesystems management (partition, formats)
-File permission management (basic and SUID, GUID, sticky bit, ACL, SELinux, Apparmor)
-Grub, systemd units, sysvinit, recovery and rescue mode
-Systel analysis, signals managment, tasks mangement, task scheduling
-Compression and archiving
-Package and repository management
-Logs analysis and management

@@ -1,5 +1,6 @@
+# How to reinstall grub in case of a partition mess
 In the case of Grub partition being corrupted but the computer is running (i.e. if rebooted it will crash but it won't crash as long as it stays powered on).
-
+<br>
 View which partition Grub is installed on :
 ```bash
 df -h
@@ -11,13 +12,12 @@ vda    252:0    0   20G  0 disk
 ├─vda2 252:2    0    1G  0 part /
 └─vda3 252:3    0   19G  0 part /home
 ```
-
 Next delete the partition Grub is installed on (/dev/sda1 in this case) using any utility you feel comfortable with (I use fdisk).
+<br>
 Create a new partition with the correct format which Grub will be installed on.
-
+<br>
 Reinstall Grub
 ```bash
 sudo grub2-install /dev/sda #or any volume which has a partition for Grub
 ```
-
 If everything is right reboot. If something failed then... crap

@@ -1,4 +1,4 @@
-# For FTP without tls encryption : 
+# For vsftpd without tls encryption : 
 ## Install vsftpd
 ```apt-get -y install vsftpd openssl```
 Copy the default conf file :  ```mv vsftpd.conf vsftpd.conf.default```
@@ -34,6 +34,7 @@ If vsftpd encountered errors in configuration, check the origin :
 If vsftpd runs correctly, connect to it using any ftp client.
 
 ## For SFTP using TLS
+After the installation part.
 Create new ssl key : 
 ```openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.key -out /etc/ssl/certs/vsftpd.crt```
 

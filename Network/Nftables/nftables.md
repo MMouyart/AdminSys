@@ -123,7 +123,7 @@ Rules will be evaluating packets based on matches, which can be categorised as f
 - arp
 - ct
 - meta
-<br>
+
 If a packet matches a rule an action determines what to do : 
 - accept: Accept the packet and stop the remain rules evaluation.
 - drop: Drop the packet and stop the remain rules evaluation.
@@ -132,7 +132,7 @@ If a packet matches a rule an action determines what to do :
 - return: Return from the current chain and continue at the next rule of the last chain. In a base chain it is equivalent to accept
 - jump <chain>: Continue at the first rule of <chain>. It will continue at the next rule after a return statement is issued
 - goto <chain>: Similar to jump, but after the new chain the evaluation will continue at the last chain instead of the one containing the goto statement
-<br>
+
 Interesting and useful matches :
 ip : 
 - protocol : upper layer protocol (tcp, icmp, udp...) ; e.g. ip protocol tcp, ip protocol != udp; ip protocol {tcp, udp}
@@ -162,32 +162,34 @@ Meta :
 - oifname : output ionterface name ; e.g. meta oifname eth0
 ether :
 - saddr : source mac address
-To log any rule that mateches a packet,  add log or log prefix "<some information realted to the log>"
+To log any rule that matches a packet,  add log or log prefix "<some information related to the log>"
 <br>
 To reject a packet with a specific message type :
 - reject with an icmp or icmpv6 message type
 - reject with tcp reset
 The syntax is : reject with <reject message type>
-<br>
+
 e.g. reject with icmp host-unreachable
-<br>
+
 Some example of rules 
-<br>
+
 To allow input from loopback 
 ```iifname lo accept;```
-<br> 
+
 To allow input connections that are in a certain state (e.g. established, new)
 ```ct state established,new accept;```
-<br>
+
 To drop invalid incoming conections
 ```ct state invalid drop;```
-<br>
+
 To limit or block icmp message types
 ```bash
 ip6 nexthdr icmpv6 icmpv6 type <icmp message type> limit rate <number>/second <action>;
 ip protocol icmp icmp type <icmp message type> limit rate <number>/second <action>;
-``` 
+```
+
 To allow a connection from a specific port/service 
 ``` <protocol> dport <port or service> ip saddr <ip or subnet> <actions>;```
+
 To enable a default policy (that will have the last word if no rules match a packet)
 policy <drop reject accept>;```

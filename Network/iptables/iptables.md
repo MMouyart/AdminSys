@@ -74,3 +74,6 @@ POP3 port 110 tcp
 IMAP port 143 tcp
 Samba port ports 137, 138, 139, 445 tcp
 
+### Useful link
+A useful link for a configuration template : https://gist.github.com/jirutka/3742890#file-rules-both-iptables
+Use this template for IPv4 and IPv6 rules located under /etc/iptables/rules.v4 and /etc/iptables/rules.v6

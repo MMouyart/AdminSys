@@ -134,42 +134,49 @@ If a packet matches a rule an action determines what to do :
 - goto <chain>: Similar to jump, but after the new chain the evaluation will continue at the last chain instead of the one containing the goto statement
 
 Interesting and useful matches :
-ip : 
+Ip : 
 - protocol : upper layer protocol (tcp, icmp, udp...) ; e.g. ip protocol tcp, ip protocol != udp; ip protocol {tcp, udp}
 - saddr : source address, can be a single address or a range or a subnet ; e.g. ip saddr 10.1.1.1 ; ip saddr 10.1.1.0/16 ; ip saddr 10.1.1.0-10.1.1.255
 - daddr : destination address; can be a single address or a range ; e.g. ip daddr 10.1.1.1 ; ip daddr 10.1.1.0-10.1.1.255 ; ip daddr {10.0.0.1, 10.1.0.1}
-ip6 : protocol, saddr, daddr
-tcp : 
+
+Ip6 : 
+- protocol : upper layer protocol (tcp, icmp, udp...) ; e.g. ip protocol tcp, ip protocol != udp; ip protocol {tcp, udp}
+- saddr : source address, can be a single address or a range or a subnet ; e.g. ip saddr 10.1.1.1 ; ip saddr 10.1.1.0/16 ; ip saddr 10.1.1.0-10.1.1.255
+- daddr : destination address; can be a single address or a range ; e.g. ip daddr 10.1.1.1 ; ip daddr 10.1.1.0-10.1.1.255 ; ip daddr {10.0.0.1, 10.1.0.1}
+
+Tcp : 
 - dport : destination port, can be either numerical or a service ; e.g. tcp dport 22 ; tcp dport https
 - sport : source port, can be either numerical or a service ; e.g. tcp sport 22 ; tcp sport https
-udp : 
-- dport
-- sport
-udplite :
-- dport
-- sport
-sctp :
-- dport
-- sport
-icmp
+
+Udp : 
+- dport : destination port, can be either numerical or a service ; e.g. udp dport 53 ; tcp dport dns
+- sport : source port, can be either numerical or a service ; e.g. tcp sport 53 ; tcp sport dns
+
+Icmp
 - type : icmp message type ; e.g. icmp type echo-reply ; icmp type {echo-request,echo-reply}
-icmpv6 :
-- type
-ct : 
+
+Icmpv6 :
+- type : icmp message type ; e.g. icmp type echo-reply ; icmp type {echo-request,echo-reply}
+
+Ct : 
 - state : state of the connection ; e.g. ct state established ; ct state {new, related}
+
 Meta :
 - iifname : input interface name ; e.g. meta iifname eth0 ; meta iifname {eth0, eth1}
 - oifname : output ionterface name ; e.g. meta oifname eth0
-ether :
+
+Ether :
 - saddr : source mac address
+
 To log any rule that matches a packet,  add log or log prefix "<some information related to the log>"
-<br>
+
 To reject a packet with a specific message type :
 - reject with an icmp or icmpv6 message type
 - reject with tcp reset
+
 The syntax is : reject with <reject message type>
 
-e.g. reject with icmp host-unreachable
+E.g. reject with icmp host-unreachable
 
 Some example of rules 
 

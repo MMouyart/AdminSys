@@ -69,3 +69,4 @@ In lftp because the certificate is auto-signed do so :
 lftp <user>@<ip adress>
 set ssl:verify-certificate no
 ```
+Vsftpd man page link : https://linux.die.net/man/8/vsftpd

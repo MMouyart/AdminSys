@@ -90,3 +90,4 @@ Remove a forwarding rule
 ```bash
 firewall-cmd --zone=<zone name> --remove-forward-port=port=<incoming port>:proto=<protocol>:toport=<destination port> --permanent
 ```
+Firewalld man page link : https://firewalld.org/documentation/man-pages/

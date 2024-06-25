@@ -41,3 +41,4 @@ ufw <action> <port or service>```
 ## Filter ICMP responses
 Modify the file under /etc/ufw/before.rules, either comment all the lines or replace the ACCEPT statements by DROP statements
 
+Manpage link : https://manpages.ubuntu.com/manpages/bionic/en/man8/ufw.8.html

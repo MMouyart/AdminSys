@@ -131,3 +131,4 @@ If a console is already open, this will fail so it is necessary to force the con
 ## To restore a VM state from snapshot : 
 	virsh restore <snapshot path>
  ```
+Virsh man page link : https://linux.die.net/man/1/virsh

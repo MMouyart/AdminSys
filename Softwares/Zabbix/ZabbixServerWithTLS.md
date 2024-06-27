@@ -101,7 +101,9 @@ SSLCertificateFile <path to certificate>
 SSLCertificateKeyFile <path to private key>
 SSLCertificateChainFile <path to intermediate certificate>
 # save and quit
-# restart apache service
+# verify apache configuration
+sudo apache2ctl configtest
+# restart apache service if everything is ok
 sudo systemctl restart apache2
 ```
 Now when you connect to your zabbix server's front end, no warning message should be appearing.

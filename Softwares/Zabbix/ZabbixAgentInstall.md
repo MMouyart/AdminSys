@@ -6,6 +6,7 @@ This agent can either be your zabbix server (zabbix server monitoring itself) or
 We will proceed as follow :
 - install the agent and configure it with clear text conmmunications
 - configure the agent to encrypt communications using a psk
+- configure the agent to encrypt communications using a certificate
 
 ## Installing zabbix agent and configure it for cleartext communications
 First download the zabbix agent .deb file and unpack it
@@ -70,3 +71,79 @@ In the host section, click on the agent you have configured, in the encryption s
 - enter your key identifier in the "PSK identity" section
 - enter the psk value in the "PSK" section
 - update the configuration
+
+## Configure the agent to encrypt communications using a certificate
+Using certificates for communications is easier to manage when there are a large number of agents.
+
+As zabbix does not support self encrypted certificates (for the server and for the agents), we will need to create our own ca which will then sign the server and agents certificates
+```bash
+# create our own ca and all the required files
+# create a directory for storing all the ca related files
+mkdir zabbix_ca
+# create a key pair for the ca
+openssl genrsa -aes256 -out <zabbix ca key> 4096
+# create a certificate for the ca and sign it with the ca key pair
+openssl req -x509 -new -key <zabbix ca key> -sha256 -days 3560 -out <zabbix ca crt>
+```
+Now that the ca has been created along with its key pair and signed certificate, let's create a certificate for our server which will be signed by the ca
+```bash
+# create a directory for storing the server certificate and key pair
+mkdir zabbix_server_certs
+# create a key pair for the server
+openssl genrsa -aes256 -out <zabbix server key> 4096
+# create a certificate for the server and sign it with the ca key pair
+openssl req -new -key <zabbix server key> -out <zabbix server csr>
+openssl x509 -req -in <zabbix server csr> -CA <zabbix ca crt> -CAkey <zabbix ca key> -CAcreateserial -out <zabbix server crt> -days 1460 -sha256
+# edit the zabbix server config file to adapt it for tls certificate-based connections
+sudo <editor of your choice> /etc/zabbix/zabbix_server.conf
+# navigate to the section ### Option TLSCaFile
+# enter the following statement
+TLSCAFile=<path to the ca certificate>
+# navigate to the section ### Option TLSCertFile
+# enter the following statement
+TLSCertFile=<path to the server certificate>
+# navigate to the section ### Option TLSKeyFile
+# enter the following statement
+TLSKeyFile=<path to the server key pair>
+# save and exit
+# restart the zabbix server service
+sudo systemctl restart zabbix-server
+```
+If no errors occur then it should be good. Let's move on the agent configuration.
+```bash
+# create a directory for storing the agent certificate and key pair
+mkdir zabbix_agent_certs
+# create a key pair for the agent
+openssl genrsa -aes256 -out <zabbix agent key> 4096
+# create a certificate for the agent and sign it with the ca key pair
+openssl req -new -key <zabbix agent key> -out <zabbix agent csr>
+openssl x509 -req -in <zabbix agent csr> -CA <zabbix ca crt> -CAkey <zabbix ca key> -CAcreateserial -out <zabbix agent crt> -days 1460 -sha256
+# edit the zabbix agent config file to adapt it for tls certificate-based connections
+sudo <editor of your choice> /etc/zabbix/zabbix_agentd.conf
+# navigate to the section ### Option TLSAccept
+# enter the following statement
+TLSAccept=cert
+# navigate to the section ### Option
+# enter the following statement TLSConnect
+TLSConnect=cert
+# navigate to the section ### Option TLSCAFile
+# enter the following statement
+TLSCAFile=<path to the ca certificate>
+# navigate to the section ### Option TLSCertFile
+# enter the following statement
+TLSCertFile=<path to the agent certificate>
+# navigate to the section ### Option TLSKeyFile
+# enter the following statement
+TLSKeyFile=<path to the agent key pair>
+# save and exit
+# restart the zabbix agent service
+sudo systemctl restart zabbix-agent
+```
+Now that the configuration is done go to the zabbix server front-end and modify the agent encryption configuration :
+- select Certificate in the "connection to host" section
+- select Certificate in the "connection from host" section
+- in the issuer section enter the issuer information relative to the agent certificate in the form : CN= ,O= ,ST=,C=
+- in the subject section enter the subject information relative to the agent certificate in the form : CN= ,O= ,ST=,C=
+
+For the issuer and subject properties you can find them using the following command
+```openssl x509 -noout -text -in <agent certificate>```

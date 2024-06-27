@@ -147,3 +147,11 @@ Now that the configuration is done go to the zabbix server front-end and modify 
 
 For the issuer and subject properties you can find them using the following command
 ```openssl x509 -noout -text -in <agent certificate>```
+
+Suppose we have a certificate and the above command returns the following regarding the issuer and the subject :
+- Issuer: C = FR, ST = Some-State, O = Internet Widgits Pty Ltd, CN = zabbix_ca
+- Subject: C = FR, ST = Some-State, O = Internet Widgits Pty Ltd, CN = zabbix_agent
+
+Then for the agent encryption configuration we would enter the following :
+- "CN=zabbix_ca,O=Internet Widgits Pty Ltd,ST=Some-State,C=FR" for the issuer section 
+- "CN=zabbix_ca,O=Internet Widgits Pty Ltd,ST=Some-State,C=FR" for the subject section

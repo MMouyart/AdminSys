@@ -83,3 +83,25 @@ sudo apache2ctl configtest
 sudo systemctl restart apache2
 ```
 Try to connect to your web server using http, it should automatically be redirected to https.
+
+# Using a certificate signed by a trusted CA
+First go to your prefered 3rd party CA to create a certificate.
+
+Eventually, if the 3rd party CA allow you to sign a certificate you have created, proceed to create your certificate signing request with openssl.
+```sudo openssl req -new -newkey rsa:2048 -nodes -keyout <path to your public/private key pair> -out <path to  your certificate signing request>```
+Then use this csr to obtained a signed certificate by your 3rd party CA.
+
+Copy on your server the certificate and the intermediate certificate.
+
+Once you have obtained a signed certificate for your server, modify the apache virtual host default configuration file.
+```bash
+sudo nano /etc/apache2/sites-available/default-ssl.conf
+# enter the following
+SSLCertificateFile <path to certificate>
+SSLCertificateKeyFile <path to private key>
+SSLCertificateChainFile <path to intermediate certificate>
+# save and quit
+# restart apache service
+sudo systemctl restart apache2
+```
+Now when you connect to your zabbix server's front end, no warning message should be appearing.

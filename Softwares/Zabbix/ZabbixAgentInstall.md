@@ -6,7 +6,6 @@ This agent can either be your zabbix server (zabbix server monitoring itself) or
 We will proceed as follow :
 - install the agent and configure it with clear text conmmunications
 - configure the agent to encrypt communications using a psk
-- configure the agent to encrypt communications using a certificate
 
 ## Installing zabbix agent and configure it for cleartext communications
 First download the zabbix agent .deb file and unpack it
@@ -71,4 +70,3 @@ In the host section, click on the agent you have configured, in the encryption s
 - enter your key identifier in the "PSK identity" section
 - enter the psk value in the "PSK" section
 - update the configuration
-

@@ -29,4 +29,7 @@ no-resolv
 server=<ip adress of the resolver>
 # if you want to specify a local domain not be resolved by dns queries (only using locally defined files) uncomment this line
 local=/<local domain>/
+# save and quit
+# restart the service
+sudo systemctl restart dnsmasq.service
 ```

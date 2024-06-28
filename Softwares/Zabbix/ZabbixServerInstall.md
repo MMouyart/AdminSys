@@ -60,4 +60,9 @@ In zabbix server details enter the following :
 - host : leave as default if your are running zabbix locally, otherwise enter the hostname of the server running zabbix
 - port : leave as default if you have not configured zabbix server to use a different port
 
-Note that this configuration process creates a file located at /usr/share/zabbix/conf/zabbix.conf.php which you can still modify later (for tls encryption among other things)
+Note that this configuration process creates a file located at /usr/share/zabbix/conf/zabbix.conf.php which you can still modify later (for tls encryption among other things).
+
+It is also important to take the firewall into consideration, because zabbix requires some traffic on defined ports.
+
+Therefore you should allow communications to and from your zabbix server (either hostname or fqdn) on port 80 (if you are not using tls) or port 443 (if you are using tls).
+And you also should allow communications to the agents on port 10051.

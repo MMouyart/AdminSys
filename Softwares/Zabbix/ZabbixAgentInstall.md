@@ -7,6 +7,7 @@ We will proceed as follow :
 - install the agent and configure it with clear text conmmunications
 - configure the agent to encrypt communications using a psk
 - configure the agent to encrypt communications using a certificate
+- firewall considerations
 
 ## Installing zabbix agent and configure it for cleartext communications
 First download the zabbix agent .deb file and unpack it
@@ -155,3 +156,11 @@ Suppose we have a certificate and the above command returns the following regard
 Then for the agent encryption configuration we would enter the following :
 - "CN=zabbix_ca,O=Internet Widgits Pty Ltd,ST=Some-State,C=FR" for the issuer section 
 - "CN=zabbix_ca,O=Internet Widgits Pty Ltd,ST=Some-State,C=FR" for the subject section
+
+## Firewall considerations
+When installing and configuring the agent on the machine, we create new network needs, which will require us to adapt our current firewall to allow zabbix realted traffic.
+
+If you are not encrypting your communications with the zabbix server or not will not change the requirements.
+
+To properly work, you will need to open port 10050 and allow communication on this port to the zabbix server.
+In addition, if you wish to use the zabbix server front-end, you need to allow traffic to the server on port 80 (if the server does not use tls) or port 443 (if the server uses tls).

@@ -107,3 +107,7 @@ sudo apache2ctl configtest
 sudo systemctl restart apache2
 ```
 Now when you connect to your zabbix server's front end, no warning message should be appearing.
+
+It is also important to take the firewall into consideration, because zabbix requires some traffic on defined ports.
+
+Therefore you should allow communications to and from your zabbix server (either hostname or fqdn) on port 80 (if you are not using tls) or port 443 (if you are using tls). And you also should allow communications to the agents on port 10051.

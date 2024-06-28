@@ -1,4 +1,20 @@
-# How to reinstall grub in case of a partition mess
+# Grub
+## Basic grub commands
+Update grub config file
+```bash
+grub2-mkconfig > /boot/grub2/grub.conf
+grub2-mkconfig -o /boot/grub2/grub.cfg
+update-grub2
+```
+Modify Linux kernel in grub command line
+```linux <drive number and partition number><kernel path> root =/dev/<drive number> ro quiet```
+Ex : linux (hd0, 1)/boot/vmlinuz root=/dev/sd1 ro quiet
+
+Modify initramfs in grub command line
+```initrd <drive number and partition><initramfs path>```
+Ex : initrd (hd0, 1)/boot/initramfs.img
+
+## Repairing corrupt grub partition
 In the case of Grub partition being corrupted but the computer is running (i.e. if rebooted it will crash but it won't crash as long as it stays powered on).
 <br>
 View which partition Grub is installed on :

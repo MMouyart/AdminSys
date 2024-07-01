@@ -129,6 +129,23 @@ If a console is already open, this will fail so it is necessary to force the con
  ```
 
 ## To restore a VM state from snapshot : 
-	virsh restore <snapshot path>
- ```
+```virsh restore <snapshot path>```
+ 
 Virsh man page link : https://linux.die.net/man/1/virsh
+
+## How to resize a disk
+First identify the name of the VM
+```virsh list --all```
+
+ If not already down shut the vm down
+ ```virsh shutdown <vm name>```
+
+ Locate the vm disk path and checks its details
+ ```bash
+ virsh domblklist debian11
+qemu-img info /var/lib/libvirt/images/debian11.qcow2
+```
+
+ Resize the disk
+ ```qemu-img resize  /var/lib/libvirt/images/debian11.qcow2 <+ or -> <size in G M or K>```
+ 

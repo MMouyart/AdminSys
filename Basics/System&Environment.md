@@ -125,3 +125,39 @@ xzcat <file.xz>
 zcat <file.Z>
 gzcat <file.gz>
 ```
+
+## Cups
+Check cups status
+```systemctl status cups.service```
+
+Configure cups
+```bash
+ls /etc/cups/
+cat /etc/cupsd.conf
+cat /etc/cups/printers.conf
+```
+Check cups logs
+```bash
+cat /var/log/cups/access_log
+cat /var/log/cups/error_log
+```
+
+Administer cups on the web
+```open https://127.0.0.1:631```
+
+Administration sections and usage
+```bash
+Section         Usage
+Administration  Adding printers, managing jobs and configuring the CUPS server
+Jobs            Checking the active, pending & completed jobs
+Printers        List or search in the installed printers
+```
+
+Legacy cups tools (used under bsd)
+```bash
+command         usage
+lpr             print a file
+lpq             show print queue/jobs
+lprm            rm/remove a file from priner queue
+lpc             printer control / troubleshooting program
+```

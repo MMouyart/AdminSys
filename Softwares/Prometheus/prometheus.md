@@ -7,7 +7,7 @@ Please, refer to the [latest version of prometheus](https://prometheus.io/downlo
 wget https://github.com/prometheus/prometheus/releases/download/v2.53.0/prometheus-2.53.0.linux-amd64.tar.gz
 tar xvzf prometheus-2.53.0.linux-amd64.tar.gz
 # generate tls certificate and private key
-openssl req -x509 -newkey rsa:4096 -nodes -keyout <prometheus key path> -out <prometheus certificate path>
+openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -keyout <prometheus key path> -out <prometheus certificate path> -subj "/C=FR/CN=<server fqdn>"
 # create a file named web-config.yml and paste the following
 tls_server_config:
   cert_file: <path to prometheus certificate>
@@ -33,7 +33,7 @@ wget https://github.com/prometheus/node_exporter/releases/download/v1.8.1/node_e
 tar xvfz node_exporter-1.8.1.linux-amd64.tar.gz
 # configure tls communications
 # generate tls certificate and private key
-openssl req -x509 -newkey rsa:4096 -nodes -keyout <node exporter key path> -out <node exporter certificate path>
+openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -keyout <node exporter key path> -out <node exporter certificate path> -subj "/C=FR/CN=<server fqdn>"
 # create a file named web-config.yml and paste the following
 tls_server_config:
   cert_file: <path to node exporter certificate>
@@ -41,9 +41,34 @@ tls_server_config:
 # save and quit
 # configure prometheus to collect node exporter metrics
 sudo <editor of your choice> <path to prometheus.yml configuration file>
-# in the target line, inside the brackets add the following
-localhost:9100
+# add the following under scrape_configs
+  - job_name: 'node-exporter'
+    scheme: https
+    tls_config:
+      ca_file: <path to node exporter certificate>
+    static_configs:
+    - targets: ['localhost:9100']
 # save and quit
 # start node explorer
 ./node_exporter \
 --web.config.file=<path to the web-config.yml file>
+# via a web browser go to https://localhost:9090/targets
+# you should see the target https://localhost:9100/metrics is up
+```
+
+## Setting up an authentication mechanism between prometheus and the node exporter instances
+The goal of this is to allow metrics collection from prometheus only to allowed user, therefore preventing any unauthorised person to gather information about the linux server's metrics.
+```bash
+# create a bcrypt hash for the specified user and password
+htpasswd -nbBC 10 <user> <password>
+# the result is of the form
+USER:$2y$10$gfPbhclOrdjmMLEXSc5CTOWP5aBfjl59hhGvjp/qWXf1FfbQKb5ca
+# the first part before the ":" is the username, the rest is the bcrypt hash, copy it
+# under the node exporter web config file add the following
+basic_auth_users:
+  <user>: <bcrypt hash>
+# in the prometheus configuration file add the following under the node exporter job_name
+    basic_auth:
+      username: <node exporter username>
+      password: <node exporter password>
+# reload prometheus and in the https://localhost:9090/targets page you should see the target https://localhost:9100/metrics is up

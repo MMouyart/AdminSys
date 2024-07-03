@@ -89,5 +89,42 @@ basic_auth_users:
 ```
 
 ## Setting up systemd services for prometheus and node exporter
-```bash
 To automate the process creation and restart of prometheus and node exporter, the best is to create systemd services (if your init system is systemd)
+```bash
+# first let's create the service for prometheus
+sudo <editor of your choice> /etc/systemd/system/prometheus.service
+# add the following
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+[Service]
+User=<user to launch prometheus with>
+Group=<group of the user if needed to specify>
+ExecStart=<path of the binary> --config.file="<path of the configuration file> --web.config.file="<path to the web configuration file>" --storage.tsdb.path="<path to the prometheus data folder>"
+[Install]
+WantedBy=multi-user.target
+# save and exit
+sudo systemctl daemon-reload
+sudo systemctl enable prometheus
+sudo sytemctl start prometheus
+# normally everything should run fine, otherwise troubleshoot to see what's wrong
+# let's then create the node exporter service
+sudo <editor of your choice> /etc/systemd/system/node_exporter.service
+# add the following
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target prometheus.service
+[Service]
+User=<user to launch node exporter with>
+Group=<group of the user if needed to specify>
+ExecStart=<path of the binary> --web.config.file="<path to the web configuration file>"
+[Install]
+WantedBy=multi-user.target
+# save and exit
+sudo systemctl daemon-reload
+sudo systemctl enable prometheus
+sudo sytemctl start prometheus
+# normally everything should run fine, otherwise troubleshoot to see what's wrong
+```

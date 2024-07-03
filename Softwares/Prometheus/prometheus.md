@@ -23,9 +23,23 @@ curl --insecure https://localhost:9090/graph
 # when needed shutdown prometheus
 kill -s SIGHUP <prometheus pid>
 # or just kill it
-kill -s SIGTERM <prometheus pid>x
+kill -s SIGTERM <prometheus pid>
 ```
 
+## Prometheus authentication
+As of now, any body who can acces the prometheus server can basically view and do anything, to remediate to that let's implement a username and password authentication mechanism
+```bash
+# create a bcrypt hash for the specified user and password
+htpasswd -nbBC 10 <user> <password>
+# the result is of the form
+USER:$2y$10$gfPbhclOrdjmMLEXSc5CTOWP5aBfjl59hhGvjp/qWXf1FfbQKb5ca
+# the first part before the ":" is the username, the rest is the bcrypt hash, copy it
+# modify the web configuration file of prometheus and add the following
+basic_auth_users:
+  <user>: <bcrypt hash>
+# restart prometheus and now you shold be prompted for a username and password
+
+```
 ## Monitor your linux server using node exporter
 Please refer to the [latest version of node exporter](https://prometheus.io/download/#node_exporter) when following this tutorial for security reasons.
 ```bash
@@ -72,3 +86,8 @@ basic_auth_users:
       username: <node exporter username>
       password: <node exporter password>
 # reload prometheus and in the https://localhost:9090/targets page you should see the target https://localhost:9100/metrics is up
+```
+
+## Setting up systemd services for prometheus and node exporter
+```bash
+To automate the process creation and restart of prometheus and node exporter, the best is to create systemd services (if your init system is systemd)

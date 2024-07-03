@@ -1,0 +1,9 @@
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+[Service]
+User=Grafana
+ExecStart=/home/Grafana/prometheus/prometheus --config.file="/home/Grafana/prometheus/prometheus.yml" --web.config.file="/home/Grafana/prometheus/web-config.yml" --storage.tsdb.path=home/Grafana/prometheus/data
+[Install]
+WantedBy=multi-user.target

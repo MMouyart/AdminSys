@@ -1,0 +1,5 @@
+tls_server_config:
+  cert_file: /home/Grafana/prometheus/prometheus.crt
+  key_file: /home/Grafana/prometheus/prometheus.key
+basic_auth_users:
+  admin: $2y$10$Ko/IDHq.N6rjVReeTf2EUuoBV1fp9TQ.MfKow1OFy/F5gRRcUhYRm

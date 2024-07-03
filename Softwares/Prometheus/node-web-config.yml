@@ -1,0 +1,6 @@
+tls_server_config:
+  cert_file: /home/Grafana/prometheus/node.crt
+  key_file: /home/Grafana/prometheus/node.key
+basic_auth_users:
+  Grafana: $2y$10$CHGJcjCeJMLQ4fjdyOLG1.sDzxmXNe03AS9wxfeyNRdOdoM0qRjta:wq
+

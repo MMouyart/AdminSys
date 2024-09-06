@@ -148,4 +148,10 @@ qemu-img info /var/lib/libvirt/images/debian11.qcow2
 
  Resize the disk
  ```qemu-img resize  /var/lib/libvirt/images/debian11.qcow2 <+ or -> <size in G M or K>```
+
+ Restart the machine
+ ```virsh start <domain>```
+
+ Connect to the machine and resize the /partition
+ ```resize2fs <partition>```
  
